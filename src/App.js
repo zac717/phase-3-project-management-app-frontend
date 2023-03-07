@@ -5,20 +5,26 @@ import Modal from "./components/Modal";
 import axios from 'axios';  
 
 
-const tasks =[
-  {
-    id: 1,
-    title: "twende sana",
-    description: " lats gooo",
-    completed: true
-  },
-  {
-    id:3,
-    title: "weekly reports",
-    description: "sending overdue reports",
-    completed: false
-  }
-]
+//const tasks =[
+  //{
+    //id: 1,
+    //title: " music",
+    //description: "create an organized rafrobeat mx ",
+    //completed: true
+  //},
+  //{
+    //id:3,
+    //title: "weekly reports",
+    //description: "sending overdue reports",
+    //completed: false
+  //},
+  //{
+    //id: 2,
+    //title: "today reports",
+    //description: "fill outtoday report",
+    //completed: true
+  //}
+//]
 
 class App extends Component {
   constructor(props) {
@@ -32,22 +38,22 @@ class App extends Component {
         description: "",
         completed: false
       },
-      taskList: tasks
+      taskList: []
     };
   }
 
   // Add componentDidMount()
-  //componentDidMount() {
-    //this.refreshList();
-  //}
+  componentDidMount() {
+    this.refreshList();
+  }
 
  
-  //refreshList = () => {
-    //axios   //Axios to send and receive HTTP requests
-      //.get("http://localhost:8000/api/tasks/")
-      //.then(res => this.setState({ taskList: res.data }))
-      //.catch(err => console.log(err));
- // };
+  refreshList = () => {
+    axios   //Axios to send and receive HTTP requests
+      .get("http://127.0.0.1:9292/projects")
+      .then(res => this.setState({ taskList: res.data }))
+      .catch(err => console.log(err));
+  };
 
 
   displayCompleted = status => {
@@ -112,42 +118,42 @@ class App extends Component {
       </li>
     ));
   };
-  // ///////////////////////////////////////////////////////////
+  
 
   ////add this after modal creation
   toggle = () => {//add this after modal creation
     this.setState({ modal: !this.state.modal });//add this after modal creation
   };
-   handleSubmit = item => {//add this after modal creation
-     this.toggle();//add this after modal creation
-     alert("save" + JSON.stringify(item));//add this after modal creation
- };
+ //  handleSubmit = item => {//add this after modal creation
+   //  this.toggle();//add this after modal creation
+    //alert("save" + JSON.stringify(item));//add this after modal creation
+ //};
 
   // Submit an item
-  //handleSubmit = item => {
-    //this.toggle();
-    //if (item.id) {
+  handleSubmit = item => {
+    this.toggle();
+    if (item.id) {
       // if old post to edit and submit
-      //axios
-        //.put(`http://localhost:8000/api/tasks/${item.id}/`, item)
-        //.then(res => this.refreshList());
-      //return;
-    //}
-    // if new post to submit
-    //axios
-      //.post("http://localhost:8000/api/tasks/", item)
-      //.then(res => this.refreshList());
-  //};
+      axios
+        .put(`http://127.0.0.1:9292projects/${item.id}/`, item)
+        .then(res => this.refreshList());
+      return;
+    }
+     //if new post to submit
+    axios
+      .post("http://127.0.0.1:9292/projects/", item)
+      .then(res => this.refreshList());
+  };
 
   // Delete item
-  //handleDelete = item => {
-    //axios
-      //.delete(`http://localhost:8000/api/tasks/${item.id}/`)
-      //.then(res => this.refreshList());
+  handleDelete = item => {
+    axios
+      .delete(`http://127.0.0.1:9292/projects/${item.id}/`)
+      .then(res => this.refreshList());
+};
+ // handleDelete = item => {//add this after modal creation
+   // alert("delete" + JSON.stringify(item));//add this after modal creation
   //};
-  handleDelete = item => {//add this after modal creation
-    alert("delete" + JSON.stringify(item));//add this after modal creation
-  };
 
   // Create item
   createItem = () => {
